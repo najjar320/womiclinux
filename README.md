@@ -75,6 +75,26 @@ phone ──Wi-Fi/BT──► micclient ──► hw:Loopback,0,0 (snd-aloop) �
 ./uninstall.sh
 ```
 
+## Known limitations
+
+These are known weaknesses of the current version. Contributions are welcome.
+
+- **Depends on a discontinued, closed-source binary.** Wolicheng Tech no longer supports Linux (see their [FAQ](https://wolicheng.com/womic/faq.html)). If `micclient-x86_64.AppImage` is removed from their website, `install.sh` can no longer download it and new installs stop working. Keep a personal copy if you rely on this.
+- **Only partially tested.** Wi-Fi streaming into Discord was verified with the CLI script on Linux Mint 22 (PipeWire). End-to-end connection through the GUI, **Bluetooth**, **Wi-Fi Direct**, and the installer on Fedora and Arch have not been tested yet.
+- **No USB transport.** The Linux client only supports Wi-Fi and Bluetooth.
+- **Unloads every `module-alsa-source` module.** On reconnect, the app runs `pactl unload-module module-alsa-source`. That removes *all* modules of that type, not only the WO-Mic one, which can break custom audio setups that use the same module.
+- **`libfuse2` is not checked.** AppImages need FUSE 2, which some distributions don't install by default (for example Ubuntu 24.04, where the package is `libfuse2t64`). If micclient fails to start, install it manually.
+- **Apps may drop the input on reconnect.** The WO-Mic source is briefly removed while micclient starts. An app pinned to "WO-Mic" (instead of "Default") may need you to reselect the device.
+- **x86_64 only.** micclient is not available for ARM.
+- **Window title matches the official client.** The window is titled "WO Mic Client", which may be confused with the official Windows app.
+
+## Roadmap
+
+- Unload only the module this app loaded (track its module ID).
+- Check for `libfuse2` in `install.sh`.
+- Add an open-source backend using [scrcpy](https://github.com/Genymobile/scrcpy) (`scrcpy --no-video --audio-source=mic`, Android 11+). It would remove the dependency on the proprietary client and add USB support.
+- Tray icon and auto-reconnect.
+
 ## Project layout
 
 ```
