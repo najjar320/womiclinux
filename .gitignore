@@ -1,0 +1,5 @@
+# Proprietary binary (© Wolicheng Tech) - downloaded by install.sh, never committed
+micclient-*.AppImage
+__pycache__/
+*.pyc
+.venv/
